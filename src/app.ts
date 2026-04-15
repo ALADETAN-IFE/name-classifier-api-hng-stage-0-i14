@@ -1,7 +1,6 @@
 import express from "express";
 import router from "./routes";
 import cors from "cors";
-import { ENV } from "@/config";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import morgan from "morgan";
