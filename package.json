@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "name-classifier-api-hng-stage-0-i14",
   "version": "1.0.0",
-  "description": "Backend Stage {project_name} - hng-stage-0(i14)",
+  "description": "Backend Stage 0 Name Classifier API - hng-stage-0(i14)",
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts",

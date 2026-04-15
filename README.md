@@ -1,38 +1,79 @@
-# backend
+# Backend Name Classifier API - hng-stage-0(i14)
 
-A monolithic backend API application.
+Backend service for the Stage 0 assessment. It exposes a classify endpoint that calls Genderize, processes the payload, and returns a normalized response format.
 
-## Architecture
+## Stack
 
-- **Type**: Monolith API
-- **Port**: 4000 (default)
+- Node.js + TypeScript
+- Express.js
+- CORS, Helmet, Morgan, Rate Limiting
 
-## Tech Stack
+## Base URL
 
-- **Runtime**: Node.js
-- **Language**: TypeScript
-- **Framework**: Express.js
-- **Features**:
-  - CORS
-  - Helmet (Security headers)
-  - Rate Limiting
-  - Morgan (HTTP logging)
+Default local base URL:
 
-## Getting Started
+http://localhost:4000
 
-### Prerequisites
+## Main Endpoint
 
-- Node.js (v18 or higher)
-- npm or yarn
+### GET /api/classify?name={name}
 
-### Installation
+Calls Genderize and returns:
 
-1. Clone the repository
-```bash
-cd backend
+- `name`
+- `gender`
+- `probability`
+- `sample_size` (mapped from Genderize `count`)
+- `is_confident` (`probability >= 0.7` and `sample_size >= 100`)
+- `processed_at` (UTC ISO 8601 timestamp)
+
+### Success Response (200)
+
+```json
+{
+  "status": "success",
+  "data": {
+    "name": "john",
+    "gender": "male",
+    "probability": 0.99,
+    "sample_size": 1234,
+    "is_confident": true,
+    "processed_at": "2026-04-15T09:00:00.000Z"
+  }
+}
 ```
 
-2. Install dependencies
+### Error Response Format
+
+All errors return:
+
+```json
+{
+  "status": "error",
+  "message": "<error message>"
+}
+```
+
+Typical status codes:
+
+- `400` Missing or empty name query
+- `422` Invalid name type
+- `502` Upstream Genderize error
+- `500` Internal server error
+
+Edge case:
+
+- If Genderize returns `gender: null` or `count: 0`, the API returns an error message: `No prediction available for the provided name`
+
+## Other Endpoints
+
+- `GET /` root information
+- `GET /api/v1/health` health check
+
+## Quick Start
+
+1. Install dependencies
+
 ```bash
 npm install
 ```
@@ -57,42 +98,6 @@ npm run build
 npm start
 ```
 
-## API Endpoints
-
-Base URL: `http://localhost:4000`
-
-- **GET** `/` - Root endpoint (API info)
-- **GET** `/api/v1/health` - Health check
-
-### Example Requests
-```bash
-# Root info
-curl http://localhost:4000/
-
-# Health check
-curl http://localhost:4000/api/v1/health
-
-```
-
-## Project Structure
-
-```
-backend/
-├── src/
-│   ├── config/         # Configuration files
-│   ├── middlewares/    # Custom middlewares
-│   ├── modules/        # Feature modules
-│   │   └── v1/         # API version 1
-│   │       └── health/ # Health check
-│   ├── utils/          # Utility functions
-│   ├── app.ts          # Express app setup
-│   ├── routes.ts       # Route definitions
-│   └── server.ts       # Server entry point
-├── .husky/             # Git hooks
-├── package.json
-└── tsconfig.json
-```
-
 ## Available Scripts
 
 - `npm run dev` - Start development server with hot reload
@@ -107,7 +112,6 @@ backend/
 |----------|-------------|---------||
 | `PORT` | Server port | `4000` |
 | `NODE_ENV` | Environment | `development` |
-| `ALLOWED_ORIGIN` | CORS allowed origin | `http://localhost:3000` |
 
 
 ## About this Scaffold
