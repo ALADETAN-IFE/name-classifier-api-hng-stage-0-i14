@@ -8,6 +8,7 @@ export const rootHandler = (_req: Request, res: Response) => {
     status: "running",
     endpoints: {
       health: "/api/v1/health",
+      classify: "/api/classify?name={name}",
     },
   });
 };
