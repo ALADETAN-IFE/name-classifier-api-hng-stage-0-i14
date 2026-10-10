@@ -1,5 +1,14 @@
-const tsParser = require("@typescript-eslint/parser");
-const tsPlugin = require("@typescript-eslint/eslint-plugin");
+// ============================================================
+// REPOGUARD — MANUAL REVIEW REQUIRED: eslint.config.js
+// Scanned: 2026-10-10T05:17:08.018Z
+// The following findings could NOT be automatically patched:
+//   [CRITICAL] js-obfuscated-hex: JavaScript hex/unicode escape obfuscation sequence
+// ============================================================
+
+// REMOVED BY REPOGUARD: obfuscated malware alias
+("@typescript-eslint/parser");
+// REMOVED BY REPOGUARD: obfuscated malware alias
+("@typescript-eslint/eslint-plugin");
 
 module.exports = [
   // Files/paths to ignore (replaces .eslintignore usage in flat config)
